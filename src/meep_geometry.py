@@ -16,7 +16,8 @@ class SimulationSpec:
     resolution: int = 24
     pml_thickness_um: float = 1.0
     x_margin_um: float = 3.0
-    y_margin_um: float = 3.0
+    y_margin_um: float = 5.0
+    waveguide_center_y_um: float = -5.0
 
 
 @dataclass(frozen=True)
@@ -53,8 +54,9 @@ def build_simulation_geometry(
     layout_geometry = build_layout_geometry(design=design)
 
     x_extent = 0.5 * layout_geometry.bus_length_um + spec.x_margin_um + spec.pml_thickness_um
-    ring_top = layout_geometry.ring_center_y_um + layout_geometry.outer_ring_radius_um
-    ring_bottom = -0.5 * layout_geometry.bus_width_um
+    ring_center_y_um = layout_geometry.ring_center_y_um + spec.waveguide_center_y_um
+    ring_top = ring_center_y_um + layout_geometry.outer_ring_radius_um
+    ring_bottom = spec.waveguide_center_y_um - 0.5 * layout_geometry.bus_width_um
     y_lower = ring_bottom - spec.y_margin_um - spec.pml_thickness_um
     y_upper = ring_top + spec.y_margin_um + spec.pml_thickness_um
 
@@ -64,11 +66,11 @@ def build_simulation_geometry(
     return SimulationGeometry(
         cell_size_x_um=cell_size_x_um,
         cell_size_y_um=cell_size_y_um,
-        waveguide_center_y_um=0.0,
+        waveguide_center_y_um=spec.waveguide_center_y_um,
         bus_length_um=layout_geometry.bus_length_um,
         bus_width_um=layout_geometry.bus_width_um,
         ring_center_x_um=layout_geometry.ring_center_x_um,
-        ring_center_y_um=layout_geometry.ring_center_y_um,
+        ring_center_y_um=ring_center_y_um,
         ring_radius_um=layout_geometry.ring_radius_um,
         ring_inner_radius_um=layout_geometry.inner_ring_radius_um,
         ring_outer_radius_um=layout_geometry.outer_ring_radius_um,

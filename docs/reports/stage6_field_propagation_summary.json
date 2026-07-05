@@ -2,7 +2,7 @@
   "artifact_stem": "stage6_field_propagation",
   "azimuthal_mode_number": 36,
   "cell_size_x_um": 38.0,
-  "cell_size_y_um": 20.083333333333332,
+  "cell_size_y_um": 24.083333333333332,
   "dpi": 120,
   "effective_index": 1.8,
   "field_decay_by": 1e-06,
@@ -27,9 +27,10 @@
   "summary_json_path": "/Users/krishnaa/Documents/programming/python/industry/physics/meep_ring_resonator/docs/reports/stage6_field_propagation_summary.json",
   "summary_stem": "stage4_run_summary",
   "until_time": 180.0,
+  "waveguide_center_y_um": -5.0,
   "waveguide_thickness_um": 1.0,
   "waveguide_width_um": 1.0,
   "wavelength_um": 1.55,
   "x_margin_um": 3.0,
-  "y_margin_um": 3.0
+  "y_margin_um": 5.0
 }

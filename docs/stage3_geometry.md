@@ -18,14 +18,15 @@ stay synchronized.
 - ring outer body: one `mp.Cylinder`
 - ring inner hole: one `mp.Cylinder` filled with cladding material
 - boundary condition: `1.0 um` PML on all sides
+- bus waveguide center line: `y = -5.0 um`
 
 ## Baseline simulation-domain values
 
 - resolution: `24` pixels per micron
-- cell width: `36.0 um`
-- cell height: about `16.07 um`
+- cell width: `38.0 um`
+- cell height: about `24.08 um`
 - x margin beyond the bus: `3.0 um` plus PML
-- y margin beyond the structure: `3.0 um` plus PML
+- y margin beyond the structure: `5.0 um` plus PML
 
 ## Generated artifacts
 

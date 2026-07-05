@@ -40,7 +40,8 @@ def main() -> int:
     assert abs(geometry.cell_size_x_um - expected_geometry.cell_size_x_um) < 1e-12
     assert abs(geometry.cell_size_y_um - expected_geometry.cell_size_y_um) < 1e-12
     assert geometry.bus_width_um == design.waveguide_width_um
-    assert geometry.ring_center_y_um > 0.0
+    assert geometry.waveguide_center_y_um == -5.0
+    assert geometry.ring_center_y_um > geometry.waveguide_center_y_um
     assert geometry.cell_size_x_um > geometry.bus_length_um
     assert geometry.cell_size_y_um > 2.0 * geometry.ring_outer_radius_um
 
@@ -63,6 +64,7 @@ def main() -> int:
     assert manifest["core_index"] == materials.core_index
     assert abs(manifest["cladding_epsilon"] - materials.cladding_epsilon) < 1e-12
     assert manifest["resolution"] == spec.resolution
+    assert manifest["waveguide_center_y_um"] == -5.0
 
     print(f"Geometry preview written to {preview_path}")
     print(f"Geometry summary written to {json_path}")
