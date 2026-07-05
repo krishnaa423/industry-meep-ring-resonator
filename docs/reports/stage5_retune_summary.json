@@ -1,0 +1,17 @@
+{
+  "baseline_ring_radius_um": 4.933803235848756,
+  "comparison_plot_path": "/Users/krishnaa/Documents/programming/python/industry/physics/meep_ring_resonator/docs/figures/stage5_retuned_comparison.png",
+  "dip_at_window_edge": true,
+  "observed_dip_wavelength_um": 2.019543973941368,
+  "radius_scale_factor": 0.7675000000000001,
+  "recommendation_json_path": "/Users/krishnaa/Documents/programming/python/industry/physics/meep_ring_resonator/docs/reports/stage5_retune_recommendation.json",
+  "target_wavelength_um": 1.55,
+  "tuned_csv_path": "/Users/krishnaa/Documents/programming/python/industry/physics/meep_ring_resonator/docs/data/stage5_tuned_flux_spectrum.csv",
+  "tuned_minimum_flux": 1.2336779713577998e-05,
+  "tuned_peak_flux": 0.5598871633025679,
+  "tuned_plot_path": "/Users/krishnaa/Documents/programming/python/industry/physics/meep_ring_resonator/docs/figures/stage5_tuned_flux_spectrum.png",
+  "tuned_ring_radius_um": 3.7866939835139206,
+  "tuned_summary_json_path": "/Users/krishnaa/Documents/programming/python/industry/physics/meep_ring_resonator/docs/reports/stage5_tuned_run_summary.json",
+  "tuned_wavelength_max_um": 2.019543973941368,
+  "tuned_wavelength_min_um": 1.2576064908722109
+}

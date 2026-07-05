@@ -1,0 +1,8 @@
+{
+  "baseline_ring_radius_um": 4.933803235848756,
+  "dip_at_window_edge": true,
+  "observed_dip_wavelength_um": 2.019543973941368,
+  "radius_scale_factor": 0.7675000000000001,
+  "target_wavelength_um": 1.55,
+  "tuned_ring_radius_um": 3.7866939835139206
+}
