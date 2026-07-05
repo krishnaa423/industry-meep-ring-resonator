@@ -82,7 +82,7 @@
   "ring_row_gap_um": 0.05,
   "ring_to_ring_gap_um": 1.0,
   "ring_waveguide_width_um": 0.8,
-  "summary_json_path": "/Users/krishnaa/Documents/programming/python/industry/physics/meep_ring_resonator/docs/reports/stage3_geometry_summary.json",
+  "summary_json_path": "/Users/krishnaa/Documents/programming/python/industry/physics/meep_ring_resonator/docs/reports/geometry_summary.json",
   "waveguide_center_y_um": -5.0,
   "waveguide_thickness_um": 1.0,
   "waveguide_width_um": 0.8,

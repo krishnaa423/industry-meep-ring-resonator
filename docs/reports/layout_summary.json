@@ -7,7 +7,7 @@
   "effective_index": 1.8,
   "gds_path": "/Users/krishnaa/Documents/programming/python/industry/physics/meep_ring_resonator/docs/gds/ring_resonator_layout.gds",
   "inner_ring_radius_um": 4.533803235848755,
-  "json_path": "/Users/krishnaa/Documents/programming/python/industry/physics/meep_ring_resonator/docs/reports/stage2_layout_summary.json",
+  "json_path": "/Users/krishnaa/Documents/programming/python/industry/physics/meep_ring_resonator/docs/reports/layout_summary.json",
   "layer_datatype": 0,
   "outer_ring_radius_um": 5.333803235848756,
   "ring_center_x_ums": [

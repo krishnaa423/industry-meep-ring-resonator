@@ -34,7 +34,7 @@ normalized transmission spectrum.
 
 Running the Stage 4 baseline command writes:
 
-- `docs/figures/stage4_output_flux_spectrum.png`
+- `docs/reports/stage4_output_flux_spectrum.png`
 - `docs/data/stage4_output_flux_spectrum.csv`
 - `docs/reports/stage4_run_summary.json`
 

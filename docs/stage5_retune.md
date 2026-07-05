@@ -26,9 +26,9 @@ Reducing the ring radius is the simplest first correction.
 
 Running the retuning stage writes:
 
-- `docs/figures/stage5_tuned_flux_spectrum.png`
+- `docs/reports/stage5_tuned_flux_spectrum.png`
 - `docs/data/stage5_tuned_flux_spectrum.csv`
-- `docs/figures/stage5_retuned_comparison.png`
+- `docs/reports/stage5_retuned_comparison.png`
 - `docs/reports/stage5_tuned_run_summary.json`
 - `docs/reports/stage5_retune_recommendation.json`
 - `docs/reports/stage5_retune_summary.json`

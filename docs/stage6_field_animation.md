@@ -5,6 +5,5 @@ GIF so the bus-to-ring coupling can be inspected visually.
 
 ## Generated artifacts
 
-- `docs/figures/stage6_field_propagation.gif`
-- `docs/figures/stage6_field_propagation_preview.png`
-- `docs/reports/stage6_field_propagation_summary.json`
+- `docs/figures/field_propagation.gif`
+- `docs/reports/field_propagation_summary.json`

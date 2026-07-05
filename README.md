@@ -1,23 +1,125 @@
 # Meep Ring Resonator
 
-This repo is being rebuilt from scratch as a simple Meep + `gdspy` workflow for
-a 2D side-coupled ring resonator near the telecom wavelength of 1550 nm.
+This repository contains a compact Meep + `gdspy` workflow for a 2D bus
+waveguide coupled to a two-row array of ring resonators near the telecom
+wavelength of `1.55 um`.
 
-Current status: Stages 1 through 6 are complete. The environment is verified,
-the unit system is fixed, the `gdspy` layout is generated, the matching Meep
-geometry preview is built, the baseline spectrum run is in place, and a first
-radius-retuning loop plus field-propagation animation are now implemented.
+The current design uses:
 
-## Repo layout
+- one straight bus waveguide
+- five lower-row ring resonators coupled directly to the bus
+- five upper-row ring resonators coupled to the lower row
+- a broad Gaussian source launched from the left
+- a right-side flux monitor that measures transmitted power after the
+  resonators
 
-- `src/` for plain Python scripts and shared helpers
-- `docs/` for design notes and generated reports
-- `tests/` for lightweight verification scripts
+The goal is to show how selected frequencies are pulled out of the propagating
+wave and stored in the ring array. In the transmission comparison, dips in the
+output spectrum indicate frequencies that are being filtered away from the bus
+and coupled into the resonators.
 
-This repo is intentionally not packaged as a Python module. Scripts are meant to
-be run directly from the repository root.
+## Final visuals
 
-## Environment
+The main output figures are:
+
+- `docs/figures/simulation_layout.png`
+- `docs/figures/transmission_comparison.png`
+- `docs/figures/field_propagation_no_rings.gif`
+- `docs/figures/field_propagation.gif`
+
+The layout figure shows the bus waveguide, both resonator rows, the simulation
+cell, and the vertical flux-cut line used for the transmission measurement.
+
+The transmission figure overlays the measured output flux for:
+
+- the straight-waveguide reference case with no resonators
+- the resonator-loaded case
+
+The two GIFs show the `Ez` field propagation:
+
+- `field_propagation_no_rings.gif` is the baseline case where energy stays in
+  the straight waveguide
+- `field_propagation.gif` shows the resonator-loaded structure where power is
+  pulled into the ring oscillators and circulates there
+
+## Current geometry
+
+All lengths use Meep's normalized units with `1 unit = 1 um`.
+
+### Materials
+
+- core refractive index: `2.0`
+- cladding refractive index: `1.44`
+
+### Bus and rings
+
+- straight waveguide width: `0.8 um`
+- ring waveguide width: `0.8 um`
+- ring radius: `4.9338 um`
+- ring inner radius: `4.5338 um`
+- ring outer radius: `5.3338 um`
+- bus-to-lower-ring gap: `0.05 um`
+- lower-row ring count: `5`
+- upper-row ring count: `5`
+- horizontal ring-to-ring gap: `1.0 um`
+- vertical lower-row to upper-row gap: `0.05 um`
+
+### Placement
+
+- waveguide center line: `y = -5.0 um`
+- lower ring row center: `y = 0.7838 um`
+- upper ring row center: `y = 11.5014 um`
+- simulation cell size: `73.3333 um x 37.25 um`
+
+### Source and monitor
+
+- target wavelength: `1.55 um`
+- Gaussian source center frequency: `0.645161 1/um`
+- Gaussian source frequency width: `0.30 1/um`
+- flux-cut center: `x = 34.9167 um`, `y = -5.0 um`
+- flux-cut span: `1.6 um`
+
+## Why there are two ring rows
+
+The lower row is the primary set of resonators that couples directly to the bus
+waveguide and removes energy from the through path.
+
+The upper row is not directly coupled to the bus. Instead, it couples to the
+lower row and gives the captured energy another place to circulate. In practice
+this strengthens the resonance trapping and deepens the transmission dips.
+
+In the current design, that second row is the main reason the normalized
+transmission develops a much deeper minimum than the single-row versions.
+
+## Code layout
+
+The code is now organized by job rather than by stage number:
+
+- `src/design.py`
+  Defines the shared geometry and material parameters with small dataclasses.
+- `src/layout.py`
+  Builds the GDS and SVG layout artifacts.
+- `src/geometry.py`
+  Builds the Meep simulation geometry and the layout preview image.
+- `src/spectrum.py`
+  Runs a single broadband spectrum simulation.
+- `src/transmission.py`
+  Runs the reference and resonator cases and compares their output flux.
+- `src/animation.py`
+  Generates the field propagation GIFs.
+- `src/tuning.py`
+  Keeps the optional resonance-retuning workflow.
+
+The small script entrypoints are:
+
+- `src/generate_layout.py`
+- `src/preview_geometry.py`
+- `src/run_spectrum.py`
+- `src/compare_transmission.py`
+- `src/generate_field_gif.py`
+- `src/retune_resonance.py`
+
+## How to run
 
 The intended Conda environment is `meep`.
 
@@ -25,149 +127,75 @@ The intended Conda environment is `meep`.
 /Users/krishnaa/miniconda/bin/conda activate meep
 ```
 
-Stage 1 verified these packages in that environment:
-
-- `pymeep 1.33.0`
-- `gdspy 1.6.13`
-- `numpy 2.5.1`
-- `matplotlib 3.11.0`
-
-To rerun the environment check:
+### Build the layout
 
 ```bash
-/Users/krishnaa/miniconda/envs/meep/bin/python tests/run_stage1_check.py
+/Users/krishnaa/miniconda/envs/meep/bin/python src/generate_layout.py
 ```
 
-## Unit convention
+### Build the geometry preview
 
-The project uses Meep's normalized units with a chosen length scale of
-`1 unit = 1 um`.
+```bash
+/Users/krishnaa/miniconda/envs/meep/bin/python src/preview_geometry.py
+```
 
-- target wavelength: `lambda0 = 1.55 um`
-- target frequency: `f0 = 1 / lambda0 = 0.645161 1/um`
-- speed of light in Meep units: `c = 1`
+### Run a single broadband spectrum
 
-## Stage 1 baseline assumptions
+```bash
+/Users/krishnaa/miniconda/envs/meep/bin/python src/run_spectrum.py
+```
 
-The baseline geometry values are intentionally conservative starting points, not
-final optimized photonics dimensions.
+### Compare transmission with and without resonators
 
-- core material: silicon nitride with `n = 2.0`, so `epsilon = 4.0`
-- cladding/background: silica with `n = 1.44`, so `epsilon = 2.0736`
-- provisional waveguide width: `1.0 um`
-- provisional ring waveguide width: `1.0 um`
-- provisional ring-to-bus gap sweep center: `0.2 um`
-- provisional effective index for resonance estimate: `n_eff = 1.8`
-- provisional ring radius: about `4.93 um` from the resonance condition with
-  azimuthal mode number `m = 36`
+```bash
+/Users/krishnaa/miniconda/envs/meep/bin/python src/compare_transmission.py
+```
 
-The width is still a design variable. For now, `1.0 um` is a practical first
-pass because it matches the requested thickness scale and should be easy to
-simulate before we tighten the design with actual transmission results.
+### Generate field animations
 
-## Stage 1 files
+```bash
+/Users/krishnaa/miniconda/envs/meep/bin/python src/generate_field_gif.py
+```
 
-- [src/check_environment.py](src/check_environment.py)
-- [src/stage1_baseline.py](src/stage1_baseline.py)
-- [docs/stage1_baseline.md](docs/stage1_baseline.md)
-- [tests/run_stage1_check.py](tests/run_stage1_check.py)
+## Checks
 
-## Stage 2 files
+The repository still keeps lightweight verification scripts under `tests/`:
 
-- [src/ring_layout.py](src/ring_layout.py)
-- [src/stage2_generate_gds.py](src/stage2_generate_gds.py)
-- [docs/stage2_layout.md](docs/stage2_layout.md)
-- [tests/run_stage2_check.py](tests/run_stage2_check.py)
+- `tests/run_design_check.py`
+- `tests/run_layout_check.py`
+- `tests/run_geometry_check.py`
+- `tests/run_spectrum_check.py`
+- `tests/run_tuning_check.py`
+- `tests/run_transmission_check.py`
 
-Stage 2 writes these generated artifacts:
+Examples:
+
+```bash
+/Users/krishnaa/miniconda/envs/meep/bin/python tests/run_design_check.py
+/Users/krishnaa/miniconda/envs/meep/bin/python tests/run_transmission_check.py
+```
+
+## Generated files
+
+The important generated files are:
 
 - `docs/gds/ring_resonator_layout.gds`
-- `docs/figures/ring_resonator_layout.svg`
-- `docs/reports/stage2_layout_summary.json`
+- `docs/figures/simulation_layout.png`
+- `docs/figures/transmission_comparison.png`
+- `docs/figures/field_propagation_no_rings.gif`
+- `docs/figures/field_propagation.gif`
 
-To generate and verify the layout:
+Diagnostic CSV and JSON outputs are kept under:
 
-```bash
-/Users/krishnaa/miniconda/envs/meep/bin/python src/stage2_generate_gds.py
-/Users/krishnaa/miniconda/envs/meep/bin/python tests/run_stage2_check.py
-```
+- `docs/data/`
+- `docs/reports/`
 
-## Stage 3 files
+## Interpretation
 
-- [src/meep_geometry.py](src/meep_geometry.py)
-- [src/stage3_build_meep_geometry.py](src/stage3_build_meep_geometry.py)
-- [docs/stage3_geometry.md](docs/stage3_geometry.md)
-- [tests/run_stage3_check.py](tests/run_stage3_check.py)
+This project uses a broad Gaussian source so one simulation can probe a band of
+frequencies around the `1.55 um` target instead of a single monochromatic tone.
 
-Stage 3 writes these generated artifacts:
-
-- `docs/figures/stage3_meep_geometry.png`
-- `docs/reports/stage3_geometry_summary.json`
-
-To generate and verify the baseline Meep geometry:
-
-```bash
-/Users/krishnaa/miniconda/envs/meep/bin/python src/stage3_build_meep_geometry.py
-/Users/krishnaa/miniconda/envs/meep/bin/python tests/run_stage3_check.py
-```
-
-## Stage 4 files
-
-- [src/meep_baseline_run.py](src/meep_baseline_run.py)
-- [src/stage4_run_baseline.py](src/stage4_run_baseline.py)
-- [docs/stage4_baseline_run.md](docs/stage4_baseline_run.md)
-- [tests/run_stage4_check.py](tests/run_stage4_check.py)
-
-Stage 4 writes these generated artifacts:
-
-- `docs/figures/stage4_output_flux_spectrum.png`
-- `docs/data/stage4_output_flux_spectrum.csv`
-- `docs/reports/stage4_run_summary.json`
-
-To run and verify the first baseline spectrum:
-
-```bash
-/Users/krishnaa/miniconda/envs/meep/bin/python src/stage4_run_baseline.py
-/Users/krishnaa/miniconda/envs/meep/bin/python tests/run_stage4_check.py
-```
-
-## Stage 5 files
-
-- [src/resonance_retune.py](src/resonance_retune.py)
-- [src/stage5_retune.py](src/stage5_retune.py)
-- [docs/stage5_retune.md](docs/stage5_retune.md)
-- [tests/run_stage5_check.py](tests/run_stage5_check.py)
-
-Stage 5 writes these generated artifacts:
-
-- `docs/figures/stage5_tuned_flux_spectrum.png`
-- `docs/data/stage5_tuned_flux_spectrum.csv`
-- `docs/figures/stage5_retuned_comparison.png`
-- `docs/reports/stage5_tuned_run_summary.json`
-- `docs/reports/stage5_retune_recommendation.json`
-- `docs/reports/stage5_retune_summary.json`
-
-To run and verify the first retuning pass:
-
-```bash
-/Users/krishnaa/miniconda/envs/meep/bin/python src/stage5_retune.py
-/Users/krishnaa/miniconda/envs/meep/bin/python tests/run_stage5_check.py
-```
-
-## Stage 6 files
-
-- [src/field_animation.py](src/field_animation.py)
-- [src/stage6_generate_field_gif.py](src/stage6_generate_field_gif.py)
-- [docs/stage6_field_animation.md](docs/stage6_field_animation.md)
-
-Stage 6 writes these generated artifacts:
-
-- `docs/figures/stage6_field_propagation.gif`
-- `docs/figures/stage6_field_propagation_preview.png`
-- `docs/reports/stage6_field_propagation_summary.json`
-
-## Next stages
-
-1. Add field-frame export so the waveguide-to-ring coupling can be animated.
-2. Improve the spectrum pipeline with explicit transmission normalization.
-3. Add a multi-gap comparison plot of power vs frequency for different gaps.
+If the resonator-loaded output flux drops below the straight-waveguide reference
+at a particular frequency, that frequency is being filtered by the resonator
+network. The deeper the dip, the more strongly that frequency is being coupled
+out of the bus and into the rings.

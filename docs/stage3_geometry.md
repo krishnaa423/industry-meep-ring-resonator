@@ -27,12 +27,13 @@ stay synchronized.
 - cell height: about `24.08 um`
 - x margin beyond the bus: `3.0 um` plus PML
 - y margin beyond the structure: `5.0 um` plus PML
+- bus center line in x is shifted so the right waveguide edge reaches the start of the right PML
 
 ## Generated artifacts
 
 Running the Stage 3 builder writes:
 
-- `docs/figures/stage3_meep_geometry.png`
+- `docs/figures/simulation_layout.png`
 - `docs/reports/stage3_geometry_summary.json`
 
 ## Verification strategy
