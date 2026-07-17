@@ -27,20 +27,47 @@ The main output figures are:
 - `docs/figures/field_propagation_no_rings.gif`
 - `docs/figures/field_propagation.gif`
 
+### Layout preview
+
+![Simulation layout](docs/figures/simulation_layout.png)
+
 The layout figure shows the bus waveguide, both resonator rows, the simulation
 cell, and the vertical flux-cut line used for the transmission measurement.
 
-The transmission figure overlays the measured output flux for:
+### Transmission comparison
+
+![Transmission comparison](docs/figures/transmission_comparison.png)
+
+![Normalized transmission](docs/reports/normalized_transmission.png)
+
+The transmission figures overlay the measured output flux for:
 
 - the straight-waveguide reference case with no resonators
 - the resonator-loaded case
 
+The normalized view makes the resonance dips easier to inspect directly in the
+README without opening the raw CSV outputs.
+
+### Spectrum and flux plots
+
+![Broadband output spectrum](docs/reports/output_flux_spectrum.png)
+
+![Straight waveguide reference flux](docs/reports/reference_flux.png)
+
+![Resonator-loaded flux](docs/reports/ring_flux.png)
+
 The two GIFs show the `Ez` field propagation:
+
+### Field animations
 
 - `field_propagation_no_rings.gif` is the baseline case where energy stays in
   the straight waveguide
 - `field_propagation.gif` shows the resonator-loaded structure where power is
   pulled into the ring oscillators and circulates there
+
+![Field propagation without rings](docs/figures/field_propagation_no_rings.gif)
+
+![Field propagation with resonators](docs/figures/field_propagation.gif)
 
 ## Current geometry
 
